@@ -1,0 +1,83 @@
+==============================
+PDF Encryptor - Setup Instructions
+==============================
+
+1. Install Python
+------------------
+Download and install Python from the official Python website:
+
+    https://www.python.org/downloads/
+
+During installation, make sure to:
+✔ Check the option "Add Python to PATH"
+
+2. Verify Python Installation
+------------------------------
+Open a terminal (CMD or PowerShell) and run:
+
+    python --version
+
+or if that doesn't work:
+
+    py --version
+
+You should see something like:
+    Python 3.x.x
+
+3. Install pip (Python's package manager)
+------------------------------------------
+pip is included with most Python installations.
+
+To check if pip is available, run:
+
+    pip --version
+
+If it's missing, see:
+    https://pip.pypa.io/en/stable/installation/
+
+4. Install Required Python Library
+-----------------------------------
+Install the library required by the script:
+
+    pip install PyPDF2
+
+Or (if using py instead of python):
+
+    py -m pip install PyPDF2
+
+5. Using the Script
+--------------------
+1. Place the script in a folder along with the `.pdf` files you want to encrypt.
+
+2. Double click the script (or run from terminal):
+
+    python PDF_ENCRYPT.py
+
+3. All encrypted PDFs will be saved in a subfolder called `encrypted`.
+
+    Default password: 1234
+
+You can modify the password by editing the script:
+- Find the line: `password = "1234"`
+- Replace `"1234"` with your desired password.
+
+6. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+To run the program without opening a terminal:
+
+1. Install PyInstaller:
+
+    pip install pyinstaller
+
+2. Compile the script:
+
+    pyinstaller --onefile --noconsole PDF_ENCRYPT.py
+
+3. The `.exe` will be located inside the `dist/` folder.
+
+4. Place it in a folder with `.pdf` files and double-click to run.
+   Encrypted files will appear in the `encrypted/` folder.
+
+==============================
+End of Setup Instructions
+==============================
