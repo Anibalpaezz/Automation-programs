@@ -4,7 +4,7 @@ PDF to DOCX Converter - Setup
 
 1. Install Python
 ------------------
-Download and install Python from the official website:
+Download and install Python from the official website if you don't already have it:
 
 https://www.python.org/downloads/
 
@@ -52,7 +52,7 @@ Then, run the script:
 
     python PDF_DOCX.py
 
-The converted .docx files will be saved in a folder named 'converted'.
+The converted .docx files will be saved in a 'converted' folder.
 
 6. Optional: Create a Windows Executable (.exe)
 ------------------------------------------------
