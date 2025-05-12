@@ -72,10 +72,3 @@ Each tool in this repository is organised by category (PDFS, Word, PowerPoint, I
 
 ---
 
-## ⚙️ Requirements
-
-Each script specifies its dependencies at the top. You can install all required libraries with:
-
-```bash
-pip install -r requirements.txt
-
