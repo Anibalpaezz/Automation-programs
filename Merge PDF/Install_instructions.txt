@@ -1,0 +1,77 @@
+==============================
+PDF Merger - Setup Instructions
+==============================
+
+1. Install Python
+------------------
+Download and install Python from the official website:
+
+    https://www.python.org/downloads/
+
+Make sure to:
+✔ Check the box "Add Python to PATH" during installation.
+
+2. Verify Python Installation
+------------------------------
+Open your terminal (CMD or PowerShell) and run:
+
+    python --version
+
+If that fails, try:
+
+    py --version
+
+You should see something like:
+    Python 3.x.x
+
+3. Install pip (Python's package manager)
+------------------------------------------
+pip is included by default in most modern Python installations.
+
+To check if pip is installed:
+
+    pip --version
+
+If not, refer to the official guide:
+    https://pip.pypa.io/en/stable/installation/
+
+4. Install Required Python Libraries
+-------------------------------------
+Install the required library for this script:
+
+    pip install PyPDF2
+
+Or, if pip is not recognized:
+
+    py -m pip install PyPDF2
+
+5. Run the Script
+------------------
+Place the script in a folder that contains the PDF files you want to merge.
+
+Then execute:
+
+    python your_script_name.py
+
+This will merge all `.pdf` files in the current folder into one.
+The merged file will be saved in a subfolder called `merged`.
+
+6. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+To run the program with a double click (no terminal):
+
+First install PyInstaller:
+
+    pip install pyinstaller
+
+Then compile the script into an executable:
+
+    pyinstaller --onefile --noconsole your_script_name.py
+
+The `.exe` file will be generated inside the `dist/` folder.
+
+You can then move the `.exe` anywhere and place your `.pdf` files next to it.
+
+==============================
+End of Setup Instructions
+==============================
