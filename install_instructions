@@ -1,0 +1,71 @@
+==============================
+PDF to DOCX Converter - Setup
+==============================
+
+1. Install Python
+------------------
+Download and install Python from the official website:
+
+https://www.python.org/downloads/
+
+Make sure to:
+✔ Check the box "Add Python to PATH" during installation.
+
+2. Verify Python Installation
+------------------------------
+Open your terminal (CMD or PowerShell) and run:
+
+    python --version
+
+You should see something like:
+    Python 3.x.x
+
+If that fails, try:
+    py --version
+
+3. Install pip (Python's package manager)
+------------------------------------------
+pip is included by default in most modern Python installations.
+
+Check if pip is available by running:
+
+    pip --version
+
+If it is not found, follow the official guide to install it:
+https://pip.pypa.io/en/stable/installation/
+
+4. Install Required Python Libraries
+-------------------------------------
+Install the only required library for the script:
+
+    pip install pdf2docx
+
+You can also use the following if 'pip' doesn't work:
+
+    py -m pip install pdf2docx
+
+5. Run the Script
+------------------
+Place the PDF files you want to convert in the same folder as the script.
+
+Then, run the script:
+
+    python PDF_DOCX.py
+
+The converted .docx files will be saved in a folder named 'converted'.
+
+6. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+If you want to run the program by double-clicking, install PyInstaller:
+
+    pip install pyinstaller
+
+Then generate the executable:
+
+    pyinstaller --onefile --noconsole PDF_DOCX.py
+
+Your executable will appear in the 'dist' folder. Move it where needed.
+
+==============================
+End of Setup Instructions
+==============================
