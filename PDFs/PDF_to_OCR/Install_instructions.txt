@@ -1,0 +1,72 @@
+==============================
+PDF OCR Converter - Setup Instructions
+==============================
+
+1. Install Python
+------------------
+Download and install the latest Python 3 from:
+    https://www.python.org/downloads/
+
+✔ During installation, check “Add Python to PATH.”
+
+2. Verify Python Installation
+------------------------------
+Open Command Prompt or PowerShell and run:
+    python --version
+You should see something like:
+    Python 3.x.x
+
+If that fails, try:
+    py --version
+
+3. Install pip (if needed)
+---------------------------
+pip is included by default in modern Python installers. Check with:
+    pip --version
+If pip is missing, follow:
+    https://pip.pypa.io/en/stable/installation/
+
+4. Install System Dependencies
+-------------------------------
+a) **Poppler** (for pdf2image)  
+   • Windows: Download from  
+     https://github.com/oschwartz10612/poppler-windows/releases/  
+   • Extract and add the bin folder (containing `pdftoppm.exe`) to your PATH.
+
+b) **Tesseract OCR**  
+   • Windows: Install from  
+     https://github.com/UB-Mannheim/tesseract/wiki  
+   • During installation, ensure “Add to PATH” is selected.
+
+5. Install Required Python Libraries
+-------------------------------------
+In your terminal, run:
+    pip install pdf2image pytesseract PyPDF2
+
+Or, if you use the `py` launcher:
+    py -m pip install pdf2image pytesseract PyPDF2
+
+6. Run the OCR Script
+----------------------
+1. Place `PDF_OCR.py` in a folder with the PDF files you want to process.
+2. Open a terminal in that folder and run:
+       python PDF_OCR.py
+3. A subfolder named `ocr/` will be created, containing searchable PDFs 
+   with “_ocr.pdf” appended to each filename.
+
+7. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+To run without opening a terminal window:
+
+a) Install PyInstaller:
+       pip install pyinstaller
+
+b) Build the executable:
+       pyinstaller --onefile --noconsole PDF_OCR.py
+
+c) Your standalone `.exe` will appear under `dist/`.  
+   Place it alongside your PDFs and double-click to run.
+
+==============================
+End of Setup Instructions
+==============================
