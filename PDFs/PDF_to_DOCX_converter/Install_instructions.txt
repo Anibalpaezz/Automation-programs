@@ -74,7 +74,7 @@ If you want to run the program by double-clicking, install PyInstaller:
 
 Then generate the executable:
 
-    pyinstaller --onefile --noconsole PDF_DOCX.py
+    python -m PyInstaller --onefile --noconsole PDF_DOCX.py
 
 Your executable will appear in the 'dist' folder. Move it where needed.
 

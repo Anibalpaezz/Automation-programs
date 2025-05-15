@@ -1,0 +1,63 @@
+==============================
+Image-to-ICO Converter - Setup Instructions
+==============================
+
+1. Install Python
+------------------
+Download and install Python 3.x from:
+    https://www.python.org/downloads/
+
+✔ During installation, check “Add Python to PATH.”
+
+2. Verify Python Installation
+------------------------------
+Open Command Prompt or PowerShell and run:
+    python --version
+You should see:
+    Python 3.x.x
+
+If that fails, try:
+    py --version
+
+3. Install pip (if needed)
+---------------------------
+pip is included with most Python installs. Check with:
+    pip --version
+If it’s missing, follow:
+    https://pip.pypa.io/en/stable/installation/
+
+4. Install Required Python Library
+-----------------------------------
+This script uses Pillow. Install it with:
+    pip install pillow
+
+Or:
+    py -m pip install pillow
+
+5. Prepare and Run the Script
+------------------------------
+1. Place `IMAGE_TO_ICO.py` in a folder containing your `.jpg`, `.jpeg`, or `.png` images.
+
+2. Open a terminal in that folder and run:
+       python IMAGE_TO_ICO.py
+
+3. Converted icons will be saved in:
+       `converted/ico/`
+
+6. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+To run without opening a console window:
+
+a) Install PyInstaller:
+       pip install pyinstaller
+
+b) Build the executable:
+       python -m PyInstaller --onefile --noconsole JPG_PNG_ICO.py
+
+c) The `.exe` will appear under `dist/`.
+   Move it alongside your images and double-click to run.
+   Icons will appear in `converted/ico/`.
+
+==============================
+End of Setup Instructions
+==============================
