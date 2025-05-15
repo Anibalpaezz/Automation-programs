@@ -66,7 +66,7 @@ First install PyInstaller:
 
 Then compile the script into an executable:
 
-    python -m PyInstaller --onefile --noconsole your_script_name.py
+    python -m PyInstaller --onefile --noconsole merge_pdf.py
 
 The `.exe` file will be generated inside the `dist/` folder.
 
