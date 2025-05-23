@@ -1,5 +1,5 @@
 ==============================
-WEBP to JPG/PNG Converter - Setup Instructions
+WEBP Image Converter - Setup Instructions
 ==============================
 
 1. Install Python
@@ -21,43 +21,43 @@ If that fails, try:
 
 3. Install pip (if needed)
 ---------------------------
-pip is included with most Python installers. Check with:
+pip is included with most Python installations. Check with:
     pip --version
 If it’s missing, follow:
     https://pip.pypa.io/en/stable/installation/
 
 4. Install Required Python Library
-----------------------------------
+-----------------------------------
 This script uses the Pillow library for image processing. Install it with:
     pip install pillow
 
-Or, if you use the `py` launcher:
+Or, if using the `py` launcher:
     py -m pip install pillow
 
 5. Prepare and Run the Script
 ------------------------------
-1. Place `WEBP_JPG_PNG_Converter.py` in a folder containing your `.webp` images.
+1. Place `WEBP_CONVERTER.py` in a folder containing your `.webp` images.
 2. Open a terminal in that folder and run:
-       python WEBP_JPG_PNG_Converter.py
+       python WEBP_CONVERTER.py
 3. You will be prompted to choose the output format:
-     • Type `jpg` to convert all `.webp` to `.jpg`  
+     • Type `jpg` to convert all `.webp` to `.jpg`
      • Type `png` to convert all `.webp` to `.png`
 4. Converted images will be saved in:
-     • `converted/jpg/` if you chose `jpg`  
+     • `converted/jpg/` if you chose `jpg`
      • `converted/png/` if you chose `png`
 
 6. Optional: Create a Windows Executable (.exe)
------------------------------------------------
+------------------------------------------------
 To run without opening a console window:
 
 a) Install PyInstaller:
        pip install pyinstaller
 
 b) Build the executable:
-       pyinstaller --onefile --noconsole WEBP_JPG_PNG_Converter.py
+       python -m PyInstaller --onefile --noconsole WEBP_CONVERTER.py
 
-c) The `.exe` will appear under the `dist/` folder.  
-   Move it next to your `.webp` files and double-click to run.  
+c) The `.exe` will appear under `dist/`.
+   Move it alongside your `.webp` files and double-click to run.
    Converted images will appear in the corresponding `converted/` subfolder.
 
 ==============================
