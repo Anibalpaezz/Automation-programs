@@ -28,14 +28,14 @@ If pip is missing, follow:
 
 4. Install System Dependencies
 -------------------------------
-a) **Poppler** (for pdf2image)  
-   • Windows: Download from  
-     https://github.com/oschwartz10612/poppler-windows/releases/  
+a) **Poppler** (for pdf2image)
+   • Windows: Download from
+     https://github.com/oschwartz10612/poppler-windows/releases/
    • Extract and add the bin folder (containing `pdftoppm.exe`) to your PATH.
 
-b) **Tesseract OCR**  
-   • Windows: Install from  
-     https://github.com/UB-Mannheim/tesseract/wiki  
+b) **Tesseract OCR**
+   • Windows: Install from
+     https://github.com/UB-Mannheim/tesseract/wiki
    • During installation, ensure “Add to PATH” is selected.
 
 5. Install Required Python Libraries
@@ -51,7 +51,7 @@ Or, if you use the `py` launcher:
 1. Place `PDF_OCR.py` in a folder with the PDF files you want to process.
 2. Open a terminal in that folder and run:
        python PDF_OCR.py
-3. A subfolder named `ocr/` will be created, containing searchable PDFs 
+3. A subfolder named `ocr/` will be created, containing searchable PDFs
    with “_ocr.pdf” appended to each filename.
 
 7. Optional: Create a Windows Executable (.exe)
@@ -62,9 +62,9 @@ a) Install PyInstaller:
        pip install pyinstaller
 
 b) Build the executable:
-       pyinstaller --onefile --noconsole PDF_OCR.py
+       python -m PyInstaller --onefile --noconsole PDF_OCR.py
 
-c) Your standalone `.exe` will appear under `dist/`.  
+c) Your standalone `.exe` will appear under `dist/`.
    Place it alongside your PDFs and double-click to run.
 
 ==============================
