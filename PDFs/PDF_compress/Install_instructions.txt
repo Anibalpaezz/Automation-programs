@@ -1,0 +1,81 @@
+==============================
+PDF Compressor (Ghostscript) - Setup Instructions
+==============================
+
+1. Install Python
+------------------
+Download and install Python from the official website:
+
+    https://www.python.org/downloads/
+
+Make sure to:
+✔ Check the box "Add Python to PATH" during installation.
+
+2. Verify Python Installation
+------------------------------
+Open your terminal (CMD or PowerShell) and run:
+
+    python --version
+
+If that fails, try:
+
+    py --version
+
+You should see something like:
+    Python 3.x.x
+
+3. Install Ghostscript
+------------------------
+Ghostscript is required to perform real PDF compression.
+
+Download and install it from:
+
+    https://www.ghostscript.com/download/gsdnld.html
+
+✔ During installation, make sure to add Ghostscript to your system PATH.
+
+To verify installation, run:
+
+    gs --version
+
+You should see something like:
+    10.x.x
+
+(If using Windows and `gs` does not work, try `gswin64c` instead.)
+
+4. Run the Script
+------------------
+Place the script `compress_pdf_gs.py` in a folder that contains the PDF files you want to compress.
+
+Then execute:
+
+    python compress_pdf_gs.py
+
+You will be asked to select a compression level:
+
+    1) Low    (/screen)
+    2) Medium (/ebook)
+    3) High   (/printer)
+    4) Best   (/prepress)
+
+The compressed PDF files will be saved in a subfolder called `compressed`.
+
+5. Optional: Create a Windows Executable (.exe)
+------------------------------------------------
+To run the program with a double click (no terminal):
+
+First install PyInstaller:
+
+    pip install pyinstaller
+
+Then compile the script into an executable:
+
+    python -m PyInstaller --onefile --noconsole compress_pdf_gs.py
+
+The `.exe` file will be generated inside the `dist/` folder.
+
+You can then move the `.exe` anywhere and place your `.pdf` files next to it.
+
+==============================
+End of Setup Instructions
+==============================
