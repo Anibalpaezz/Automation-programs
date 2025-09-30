@@ -1,1 +1,0 @@
-pip install spotipy tidalapi python-dotenv
