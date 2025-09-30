@@ -11,11 +11,19 @@ Compression levels:
 Requires:
     - Python
     - Ghostscript (https://www.ghostscript.com/)
+    - tqdm (optional, for progress bars)
 """
 
 import subprocess
 import sys
 from pathlib import Path
+
+# ===== progreso opcional con tqdm =====
+try:
+    from tqdm.auto import tqdm
+    _HAS_TQDM = True
+except Exception:
+    _HAS_TQDM = False
 
 
 def get_available_filename(base_path: Path) -> Path:
@@ -32,16 +40,16 @@ def get_available_filename(base_path: Path) -> Path:
         counter += 1
 
 
-def compress_pdf_with_ghostscript(
-    input_pdf: Path, output_dir: Path, quality: str = "/ebook"
-) -> None:
+def compress_pdf_with_ghostscript(input_pdf: Path, output_dir: Path, quality: str = "/ebook") -> None:
     output_pdf = get_available_filename(output_dir / input_pdf.name)
 
     # Detectar el nombre del ejecutable de Ghostscript según el sistema operativo
     gs_command = "gswin64c" if sys.platform.startswith("win") else "gs"
 
     try:
-        print(f"Compressing: {input_pdf.name} → {output_pdf.name}")
+        # Mostrar info en consola
+        print(f"  • Compressing: {input_pdf.name}")
+
         subprocess.run(
             [
                 gs_command,
@@ -56,9 +64,9 @@ def compress_pdf_with_ghostscript(
             ],
             check=True,
         )
-        print(f"✔ Compressed and saved as: {output_pdf.name}")
+        print(f"    ✔ Saved as: {output_pdf.name}")
     except subprocess.CalledProcessError:
-        print(f"✖ Ghostscript error while compressing {input_pdf.name}")
+        print(f"    ✖ Ghostscript error while compressing {input_pdf.name}")
 
 
 def main():
@@ -81,7 +89,16 @@ def main():
     choice = input("Enter choice (1-4): ").strip()
     quality = quality_map.get(choice, "/ebook")
 
-    for pdf in pdf_files:
+    # Barra de progreso para todos los PDFs
+    if _HAS_TQDM:
+        iterator = tqdm(pdf_files, desc="Compressing PDFs", unit="file")
+    else:
+        iterator = pdf_files
+
+    for idx, pdf in enumerate(iterator, start=1):
+        if not _HAS_TQDM:
+            percent = int(idx * 100 / len(pdf_files))
+            print(f"[{idx}/{len(pdf_files)}] ({percent}%)")
         compress_pdf_with_ghostscript(pdf, output_dir, quality)
 
 

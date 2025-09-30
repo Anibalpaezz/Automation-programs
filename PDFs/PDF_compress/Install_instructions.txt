@@ -43,13 +43,25 @@ You should see something like:
 
 (If using Windows and `gs` does not work, try `gswin64c` instead.)
 
-4. Run the Script
+4. Install Required Python Libraries
+-------------------------------------
+In addition to Python itself, install the following library for progress bars:
+
+    pip install tqdm
+
+Or, if you use the `py` launcher:
+
+    py -m pip install tqdm
+
+> `tqdm` is optional but recommended. Without it, the script will show a simpler percentage-based progress instead of a full bar.
+
+5. Run the Script
 ------------------
-Place the script `compress_pdf_gs.py` in a folder that contains the PDF files you want to compress.
+Place the script `pdf_compress.py` in a folder that contains the PDF files you want to compress.
 
 Then execute:
 
-    python compress_pdf_gs.py
+    python pdf_compress.py
 
 You will be asked to select a compression level:
 
@@ -60,7 +72,7 @@ You will be asked to select a compression level:
 
 The compressed PDF files will be saved in a subfolder called `compressed`.
 
-5. Optional: Create a Windows Executable (.exe)
+6. Optional: Create a Windows Executable (.exe)
 ------------------------------------------------
 To run the program with a double click (no terminal):
 
@@ -70,7 +82,7 @@ First install PyInstaller:
 
 Then compile the script into an executable:
 
-    python -m PyInstaller --onefile --noconsole compress_pdf_gs.py
+    python -m PyInstaller --onefile --noconsole pdf_compress.py
 
 The `.exe` file will be generated inside the `dist/` folder.
 
