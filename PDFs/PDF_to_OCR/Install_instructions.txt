@@ -41,7 +41,7 @@ b) **Tesseract OCR**
 5. Install Required Python Libraries
 -------------------------------------
 In your terminal, run:
-    pip install pdf2image pytesseract PyPDF2 tqdm
+    pip install pdf2image pytesseract PyPDF2 tqdm tesserocr
 
 Or, if you use the `py` launcher:
     py -m pip install pdf2image pytesseract PyPDF2 tqdm

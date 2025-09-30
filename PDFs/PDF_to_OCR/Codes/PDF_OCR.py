@@ -14,9 +14,10 @@ Dependencias del sistema:
 
 import sys
 import io
+from pdf2image import convert_from_path, pdfinfo_from_path
+import gc
 import time
 from pathlib import Path
-from pdf2image import convert_from_path
 import pytesseract
 from PyPDF2 import PdfMerger
 
@@ -56,64 +57,96 @@ def _print_inline(msg: str) -> None:
     sys.stdout.flush()
 
 
-def ocr_pdf(input_pdf: Path, output_dir: Path, dpi: int = 300) -> None:
+def ocr_pdf(
+    input_pdf: Path, output_dir: Path, dpi: int = 200, tesseract_timeout: int = 120
+) -> None:
     """
-    Convierte un PDF escaneado o de imágenes en un PDF con texto buscable mediante OCR.
-    Muestra barra de progreso por página.
+    OCR página a página (streaming) con control de timeout y menor uso de RAM.
     """
     print(f"\nProcesando OCR: {input_pdf.name}")
     try:
-        # 1) Renderizar páginas a imágenes
-        pages = convert_from_path(str(input_pdf), dpi=dpi)
-        total_pages = len(pages)
+        # 0) Validaciones rápidas
+        if input_pdf.stat().st_size == 0:
+            print("✖ PDF vacío. Se omite.")
+            return
 
-        # 2) Preparar merger para ensamblar las páginas OCR
+        # 1) Contar páginas sin renderizarlas
+        info = pdfinfo_from_path(str(input_pdf))
+        total_pages = int(info.get("Pages", 0))
+        if total_pages == 0:
+            print("✖ No se pudieron detectar páginas.")
+            return
+
         merger = PdfMerger()
 
-        # 3) Progreso por páginas
+        # 2) Progreso
         if _HAS_TQDM:
             iterator = tqdm(
-                enumerate(pages, start=1),
-                total=total_pages,
-                desc="Páginas",
-                unit="pág",
-                leave=False
+                range(1, total_pages + 1), desc="Páginas", unit="pág", leave=False
             )
         else:
-            iterator = enumerate(pages, start=1)
+            iterator = range(1, total_pages + 1)
 
         last_msg_len = 0
-        for page_num, pil_img in iterator:
-            # OCR de la página -> bytes PDF de esa página
-            pdf_bytes = pytesseract.image_to_pdf_or_hocr(pil_img, extension='pdf')
+        for page_num in iterator:
+            # Renderizar SOLO esta página
+            pil_list = convert_from_path(
+                str(input_pdf), dpi=dpi, first_page=page_num, last_page=page_num
+            )
+            if not pil_list:
+                print(f"⚠ No se pudo renderizar la página {page_num}.")
+                continue
+
+            pil_img = pil_list[0]
+
+            # 3) OCR con timeout y configuración básica
+            #   - psm 3: layout automático; probar 6 si es texto en bloques
+            #   - oem 1: LSTM only (suele ser fiable)
+            config = "--oem 1 --psm 3"
+            try:
+                pdf_bytes = pytesseract.image_to_pdf_or_hocr(
+                    pil_img,
+                    extension="pdf",
+                    lang="spa",  # o elimine si hay mezcla de idiomas
+                    config=config,
+                    timeout=tesseract_timeout,
+                )
+            except pytesseract.TesseractError as te:
+                print(f"✖ Tesseract error en pág {page_num}: {te}")
+                pil_img.close()
+                continue
+            except RuntimeError as rt:
+                print(
+                    f"✖ Timeout de Tesseract en pág {page_num} (> {tesseract_timeout}s)."
+                )
+                pil_img.close()
+                continue
+
             merger.append(io.BytesIO(pdf_bytes))
 
-            if _HAS_TQDM:
-                # tqdm ya gestiona el avance; opcionalmente podemos set_postfix
-                pass
-            else:
-                # Fallback sin dependencias: porcentaje y páginas
+            # Limpiar memoria de la imagen
+            pil_img.close()
+            del pil_img, pil_list
+            gc.collect()
+
+            if not _HAS_TQDM:
                 percent = int(page_num * 100 / total_pages)
                 msg = f"  • OCR página {page_num}/{total_pages} ({percent}%)"
-                # Limpiar restos si el mensaje nuevo es más corto
                 pad = " " * max(0, last_msg_len - len(msg))
                 _print_inline(msg + pad)
                 last_msg_len = len(msg)
 
-        # Si no hay tqdm, salto de línea para no pisar siguiente print
         if not _HAS_TQDM:
             sys.stdout.write("\n")
 
-        # 4) Nombre de salida
+        # 4) Salida
         out_name = input_pdf.stem + "_ocr.pdf"
         out_path = get_available_filename(output_dir / out_name)
-
-        # 5) Escribir PDF final
         with open(out_path, "wb") as f_out:
             merger.write(f_out)
         merger.close()
-
         print(f"✔ OCR completado: {out_path.name}")
+
     except Exception as e:
         print(f"✖ Error de OCR en {input_pdf.name}: {e}")
 

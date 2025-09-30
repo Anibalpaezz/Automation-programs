@@ -1,17 +1,24 @@
 """
-Before running this script, make sure to install the required library by executing:
-    pip install pdf2docx
-
-You can verify the installation with:
-    pip list
-
 This script converts all PDF files in the current directory to DOCX format using the pdf2docx library.
-The converted files are saved in a subfolder named 'converted'.
+The converted files are saved in a subfolder named 'Converted'.
+
+Requirements:
+    pip install pdf2docx tqdm
 """
+
 import subprocess
 import sys
 from pathlib import Path
 from pdf2docx import Converter
+
+# ===== progreso opcional con tqdm =====
+try:
+    from tqdm.auto import tqdm
+
+    _HAS_TQDM = True
+except Exception:
+    _HAS_TQDM = False
+
 
 def get_available_filename(base_path: Path) -> Path:
     """
@@ -41,18 +48,18 @@ def convert_pdf_to_docx(pdf_path: Path, output_dir: Path) -> None:
     docx_path = get_available_filename(output_path)
 
     try:
-        print(f"Converting {pdf_path.name} to {docx_path.name}...")
+        print(f"  • Converting {pdf_path.name} → {docx_path.name}")
         cv = Converter(pdf_path)
         cv.convert(docx_path, start=0, end=None)
         cv.close()
-        print(f"✔ Success: {pdf_path.name}")
+        print(f"    ✔ Success: {docx_path.name}")
     except Exception as e:
-        print(f"✖ Error converting {pdf_path.name}: {e}")
+        print(f"    ✖ Error converting {pdf_path.name}: {e}")
 
 
 def main():
     # Get the current directory where the script is located
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         folder_path = Path(sys.executable).parent  # When compiled to .exe
     else:
         folder_path = Path(__file__).parent  # When running as .py
@@ -60,16 +67,33 @@ def main():
     # Find all PDF files in the current directory
     pdf_files = [f for f in folder_path.glob("*.pdf") if f.is_file()]
 
+    if not pdf_files:
+        print("⚠ No PDF files found to convert.")
+        return
+
     # Create output folder if it doesn't exist
     output_folder = folder_path / "Converted"
     output_folder.mkdir(exist_ok=True)
 
+    # Barra de progreso global
+    if _HAS_TQDM:
+        iterator = tqdm(pdf_files, desc="Converting PDFs", unit="file")
+    else:
+        iterator = pdf_files
+
     # Convert all found PDF files
-    for pdf_file in pdf_files:
+    for idx, pdf_file in enumerate(iterator, start=1):
+        if not _HAS_TQDM:
+            percent = int(idx * 100 / len(pdf_files))
+            print(f"[{idx}/{len(pdf_files)}] ({percent}%)")
         convert_pdf_to_docx(pdf_file, output_folder)
 
     # Open the output folder when done (only on Windows)
-    subprocess.Popen(f'explorer "{output_folder}"')
+    try:
+        if sys.platform.startswith("win"):
+            subprocess.Popen(f'explorer "{output_folder}"')
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":

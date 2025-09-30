@@ -52,6 +52,16 @@ You can also use the following if 'pip' doesn't work:
 
     py -m pip install pdf2docx
 
+In addition to Python itself, install the following library for progress bars:
+
+    pip install tqdm
+
+Or, if you use the `py` launcher:
+
+    py -m pip install tqdm
+
+> `tqdm` is optional but recommended. Without it, the script will show a simpler percentage-based progress instead of a full bar.
+
 5. Run the Script
 
 ---

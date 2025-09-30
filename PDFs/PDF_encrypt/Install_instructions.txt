@@ -45,6 +45,16 @@ Or (if using py instead of python):
 
     py -m pip install PyPDF2
 
+In addition to Python itself, install the following library for progress bars:
+
+    pip install tqdm
+
+Or, if you use the `py` launcher:
+
+    py -m pip install tqdm
+
+> `tqdm` is optional but recommended. Without it, the script will show a simpler percentage-based progress instead of a full bar.
+
 5. Using the Script
 --------------------
 1. Place the script in a folder along with the `.pdf` files you want to encrypt.
