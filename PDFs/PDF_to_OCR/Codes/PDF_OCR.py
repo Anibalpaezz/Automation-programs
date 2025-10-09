@@ -4,7 +4,6 @@ Requisitos Python:
     - pdf2image     : pip install pdf2image
     - pytesseract   : pip install pytesseract
     - PyPDF2        : pip install PyPDF2
-Opcional (para barra de progreso bonita):
     - tqdm          : pip install tqdm
 
 Dependencias del sistema:
@@ -16,7 +15,6 @@ import sys
 import io
 from pdf2image import convert_from_path, pdfinfo_from_path
 import gc
-import time
 from pathlib import Path
 import pytesseract
 from PyPDF2 import PdfMerger
@@ -67,14 +65,14 @@ def ocr_pdf(
     try:
         # 0) Validaciones rápidas
         if input_pdf.stat().st_size == 0:
-            print("✖ PDF vacío. Se omite.")
+            print("✖ PDF vacio. Se omite.")
             return
 
         # 1) Contar páginas sin renderizarlas
         info = pdfinfo_from_path(str(input_pdf))
         total_pages = int(info.get("Pages", 0))
         if total_pages == 0:
-            print("✖ No se pudieron detectar páginas.")
+            print("No se pudieron detectar paginas.")
             return
 
         merger = PdfMerger()
@@ -82,7 +80,7 @@ def ocr_pdf(
         # 2) Progreso
         if _HAS_TQDM:
             iterator = tqdm(
-                range(1, total_pages + 1), desc="Páginas", unit="pág", leave=False
+                range(1, total_pages + 1), desc="Paginas", unit="pag", leave=False
             )
         else:
             iterator = range(1, total_pages + 1)
@@ -94,7 +92,7 @@ def ocr_pdf(
                 str(input_pdf), dpi=dpi, first_page=page_num, last_page=page_num
             )
             if not pil_list:
-                print(f"⚠ No se pudo renderizar la página {page_num}.")
+                print(f"No se pudo renderizar la pagina {page_num}.")
                 continue
 
             pil_img = pil_list[0]
@@ -112,12 +110,12 @@ def ocr_pdf(
                     timeout=tesseract_timeout,
                 )
             except pytesseract.TesseractError as te:
-                print(f"✖ Tesseract error en pág {page_num}: {te}")
+                print(f"✖ Tesseract error en pag {page_num}: {te}")
                 pil_img.close()
                 continue
             except RuntimeError as rt:
                 print(
-                    f"✖ Timeout de Tesseract en pág {page_num} (> {tesseract_timeout}s)."
+                    f"✖ Timeout de Tesseract en pag {page_num} (> {tesseract_timeout}s)."
                 )
                 pil_img.close()
                 continue
@@ -145,10 +143,10 @@ def ocr_pdf(
         with open(out_path, "wb") as f_out:
             merger.write(f_out)
         merger.close()
-        print(f"✔ OCR completado: {out_path.name}")
+        print(f"OCR completado: {out_path.name}")
 
     except Exception as e:
-        print(f"✖ Error de OCR en {input_pdf.name}: {e}")
+        print(f"Error de OCR en {input_pdf.name}: {e}")
 
 
 def main():
@@ -161,7 +159,7 @@ def main():
     # Buscar PDFs en la carpeta
     pdf_files = [f for f in folder_path.glob("*.pdf") if f.is_file()]
     if not pdf_files:
-        print("⚠ No se encontraron archivos PDF para OCR.")
+        print("No se encontraron archivos PDF para OCR.")
         return
 
     # Directorio de salida
